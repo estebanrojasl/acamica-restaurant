@@ -1,7 +1,6 @@
 const ENV = process.env.NODE_ENV || "development";
 const { Sequelize } = require("sequelize");
 const { MysqlConfig } = require("../environments/" + ENV).config;
-// const userDb = require("../../entities/users");
 
 const mySqlSequelize = new Sequelize(
   MysqlConfig.Db,
@@ -10,9 +9,16 @@ const mySqlSequelize = new Sequelize(
   {
     host: MysqlConfig.Host,
     dialect: MysqlConfig.Dialect,
+    dialectOptions: {
+      multipleStatements: true,
+    },
     operatorsAliases: 0,
   }
 );
+
+// const setDb = async (req, res, next) => {
+//   return await mySqlSequelize.query(`USE larissa_restaurant;`);
+// };
 
 const initDatabase = () => {
   mySqlSequelize.sync({ force: false }).then(() => {
@@ -21,5 +27,7 @@ const initDatabase = () => {
 };
 
 module.exports = {
+  mySqlSequelize,
   initDatabase,
+  // setDb,
 };
