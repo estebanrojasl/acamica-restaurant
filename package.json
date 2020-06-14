@@ -1,0 +1,34 @@
+{
+  "name": "restaurant",
+  "version": "1.0.0",
+  "description": "restaurant delivery backend",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon server.js",
+    "seed": "node ./src/seed.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/estebanrojasl/acamica-restaurant.git"
+  },
+  "keywords": [
+    "restaurant, delivery, API"
+  ],
+  "author": "Esteban Rojas",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/estebanrojasl/acamica-restaurant/issues"
+  },
+  "homepage": "https://github.com/estebanrojasl/acamica-restaurant#readme",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "express": "^4.17.1",
+    "jsonwebtoken": "^8.5.1",
+    "mysql2": "^2.1.0",
+    "sequelize": "^5.21.12"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.4"
+  }
+}
