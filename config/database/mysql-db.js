@@ -16,10 +16,6 @@ const mySqlSequelize = new Sequelize(
   }
 );
 
-// const setDb = async (req, res, next) => {
-//   return await mySqlSequelize.query(`USE larissa_restaurant;`);
-// };
-
 const initDatabase = () => {
   mySqlSequelize.sync({ force: false }).then(() => {
     console.log("Data base connection established");
@@ -29,5 +25,4 @@ const initDatabase = () => {
 module.exports = {
   mySqlSequelize,
   initDatabase,
-  // setDb,
 };

@@ -1,8 +1,5 @@
 const validateJWT = (req, res, next) => {
-  // Hago mi lógica
-  console.log("Pasó por middleware");
-  // descifro
-  // valido propiedad es_admin
+  console.log("Middleware working");
   next();
 };
 

@@ -1,10 +1,9 @@
 const { mySqlSequelize } = require("../../config/database/mysql-db");
 
-const getBandasDb = async () => {
-  //   await setDb();
-  return await mySqlSequelize.query(`SELECT * FROM banda`, {
+const getUsersDb = async () => {
+  return await mySqlSequelize.query(`SELECT * FROM users`, {
     type: mySqlSequelize.QueryTypes.SELECT,
   });
 };
 
-module.exports = { getBandasDb };
+module.exports = { getUsersDb };

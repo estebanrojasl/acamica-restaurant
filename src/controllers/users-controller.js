@@ -1,8 +1,8 @@
 const userService = require("../services/user-service");
 
-const getBandas = async (req, res) => {
+const getUsers = async (req, res) => {
   try {
-    const userInfo = await userService.getBandasDb();
+    const userInfo = await userService.getUsersDb();
     return res.status(200).json(userInfo);
   } catch (err) {
     console.log(err);
@@ -10,4 +10,4 @@ const getBandas = async (req, res) => {
   }
 };
 
-module.exports = { getBandas };
+module.exports = { getUsers };
