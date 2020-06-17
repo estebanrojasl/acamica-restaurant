@@ -1,9 +1,9 @@
-const userService = require("../services/user-service");
+const productService = require("../services/product-service");
 
-const getUsers = (req, res) => {
-  return userService
-    .getUsers()
-    .then((userInfo) => res.status(200).json(userInfo))
+const getProducts = (req, res) => {
+  return productService
+    .getProductsDb()
+    .then((productInfo) => res.status(200).json(productInfo))
     .catch((err) => {
       return res.status(500).json(err);
     });
@@ -17,4 +17,4 @@ const updateUser = (req, res) => {
   return res.status(200).json("Update Users");
 };
 
-module.exports = { getUsers, createUser, updateUser };
+module.exports = { getProducts, createUser, updateUser };

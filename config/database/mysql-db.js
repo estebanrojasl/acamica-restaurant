@@ -13,6 +13,7 @@ const mySqlSequelize = new Sequelize(
       multipleStatements: true,
     },
     operatorsAliases: 0,
+    logging: MysqlConfig.logging,
   }
 );
 

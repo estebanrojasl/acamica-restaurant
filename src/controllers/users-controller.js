@@ -10,4 +10,14 @@ const getUsers = async (req, res) => {
   }
 };
 
-module.exports = { getUsers };
+const createUser = async (req, res) => {
+  try {
+    await userService.createUserDb(req);
+    return res.status(204).json();
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json(err);
+  }
+};
+
+module.exports = { getUsers, createUser };
