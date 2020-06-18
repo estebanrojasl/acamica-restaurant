@@ -1,20 +1,13 @@
-const userService = require("../services/user-service");
+const orderService = require("../services/order-service");
 
-const getUsers = (req, res) => {
-  return userService
-    .getUsers()
-    .then((userInfo) => res.status(200).json(userInfo))
-    .catch((err) => {
-      return res.status(500).json(err);
-    });
+const getOrders = async (req, res) => {
+  try {
+    const orderInfo = await orderService.getOrdersDb();
+    return res.status(200).json(orderInfo);
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json(err);
+  }
 };
 
-const createUser = (req, res) => {
-  return res.status(200).json("Create Users");
-};
-
-const updateUser = (req, res) => {
-  return res.status(200).json("Update Users");
-};
-
-module.exports = { getUsers, createUser, updateUser };
+module.exports = { getOrders };

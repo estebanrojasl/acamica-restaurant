@@ -1,20 +1,23 @@
 const productService = require("../services/product-service");
 
-const getProducts = (req, res) => {
-  return productService
-    .getProductsDb()
-    .then((productInfo) => res.status(200).json(productInfo))
-    .catch((err) => {
-      return res.status(500).json(err);
-    });
+const getProducts = async (req, res) => {
+  try {
+    const productInfo = await productService.getProductsDb();
+    return res.status(200).json(productInfo);
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json(err);
+  }
 };
 
-const createUser = (req, res) => {
-  return res.status(200).json("Create Users");
+const createProduct = async (req, res) => {
+  try {
+    await productService.createProductDb(req);
+    return res.status(204).json();
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json(err);
+  }
 };
 
-const updateUser = (req, res) => {
-  return res.status(200).json("Update Users");
-};
-
-module.exports = { getProducts, createUser, updateUser };
+module.exports = { getProducts, createProduct };
