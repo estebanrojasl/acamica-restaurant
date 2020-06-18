@@ -1,4 +1,7 @@
+const ENV = process.env.NODE_ENV || "development";
 const { mySqlSequelize } = require("../../config/database/mysql-db");
+const jwt = require("jsonwebtoken");
+const { config } = require("../../config/environments/" + ENV);
 
 const getUsersDb = async () => {
   return await mySqlSequelize.query(`SELECT * FROM users`, {
@@ -17,4 +20,30 @@ const createUserDb = async (req) => {
   );
 };
 
-module.exports = { getUsersDb, createUserDb };
+const logUserDb = async (req, res) => {
+  const { username, password } = req.body;
+  const userData = await mySqlSequelize.query(
+    `SELECT username, password 
+    FROM users
+    WHERE username = "${username}" OR email = "${username}" AND password = "${password}";`,
+    {
+      type: mySqlSequelize.QueryTypes.SELECT,
+    }
+  );
+  if (userData.length !== 1) {
+    throw {
+      message: "Incorrect username or password",
+      error: new Error(),
+    };
+  } else {
+    const payload = {};
+    payload.username = userData.username;
+    payload.password = userData.password;
+    const tokenServer = jwt.sign(payload, config.JwtSecretKey, {
+      expiresIn: config.JwtTokenExpires,
+    });
+    return tokenServer;
+  }
+};
+
+module.exports = { getUsersDb, createUserDb, logUserDb };

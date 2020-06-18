@@ -122,8 +122,7 @@ const populateDb = async (req, res, next) => {
   try {
     await mySqlSequelize.query(
       `INSERT INTO users (name, admin, username, password, email, phone, address)
-      VALUES ('david', 1, 'juan12da', '5646*', '1@.com', '3201230', 'cra 43d 23s'),
-      ('daniel', 0, 'dan34de', '12345', '2@.com', '5412545', 'cl 23d 43');
+      VALUES ('Esteban Rojas', 1, 'erojasl', 'eafiT2020*', 'esteban7590@hotmail.com', '3201230', 'cra 43d 23s');
       
       INSERT IGNORE INTO products (name, image_url, description, price)
       VALUES 

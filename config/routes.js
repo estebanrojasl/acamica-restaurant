@@ -6,9 +6,10 @@ const authMiddleware = require("./middlewares/auth-middleware");
 const initApiRoutes = () => {
   const router = express.Router();
 
-  router.get("/users", authMiddleware.validateJWT, usersController.getUsers);
+  router.get("/users", usersController.getUsers);
   router.get("/products", productsController.getProducts);
   router.post("/users/signup", usersController.createUser);
+  router.post("/users/login", usersController.logUser);
   //   router.put("/users", usersController.updateUser);
 
   return router;

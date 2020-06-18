@@ -20,4 +20,14 @@ const createUser = async (req, res) => {
   }
 };
 
-module.exports = { getUsers, createUser };
+const logUser = async (req, res) => {
+  try {
+    const token = await userService.logUserDb(req);
+    return res.status(200).json(token);
+  } catch (err) {
+    console.log(err);
+    return res.status(401).json(err);
+  }
+};
+
+module.exports = { getUsers, createUser, logUser };
