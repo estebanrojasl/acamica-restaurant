@@ -20,4 +20,24 @@ const createProduct = async (req, res) => {
   }
 };
 
-module.exports = { getProducts, createProduct };
+const updateProduct = async (req, res) => {
+  try {
+    await productService.updateProductDb(req);
+    return res.status(204).json();
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json(err);
+  }
+};
+
+const deleteProduct = async (req, res) => {
+  try {
+    await productService.deleteProductDb(req);
+    return res.status(204).json();
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json(err);
+  }
+};
+
+module.exports = { getProducts, createProduct, updateProduct, deleteProduct };

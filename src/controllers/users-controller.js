@@ -23,7 +23,7 @@ const createUser = async (req, res) => {
 const logUser = async (req, res) => {
   try {
     const token = await userService.logUserDb(req);
-    return res.status(200).json(token);
+    return res.status(200).json({ token: token });
   } catch (err) {
     console.log(err);
     return res.status(401).json(err);

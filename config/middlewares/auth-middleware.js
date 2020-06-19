@@ -18,6 +18,15 @@ const validateJWT = (req, res, next) => {
   });
 };
 
+const validateUser = (req, res, next) => {
+  const jwtToken = req.headers.authorization.split(" ")[1];
+  const decoded = jwt.verify(jwtToken, config.JwtSecretKey);
+  if (decoded.username !== req.params.username) {
+    return res.status(401).json({ message: "Unauthorized" });
+  } else {
+    next();
+  }
+};
 const validateAdmin = (req, res, next) => {
   const jwtToken = req.headers.authorization.split(" ")[1];
   const decoded = jwt.verify(jwtToken, config.JwtSecretKey);
@@ -28,4 +37,4 @@ const validateAdmin = (req, res, next) => {
   }
 };
 
-module.exports = { validateJWT, validateAdmin };
+module.exports = { validateJWT, validateAdmin, validateUser };
