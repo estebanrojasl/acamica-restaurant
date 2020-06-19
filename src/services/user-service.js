@@ -23,7 +23,7 @@ const createUserDb = async (req) => {
 const logUserDb = async (req, res) => {
   const { username, password } = req.body;
   const userData = await mySqlSequelize.query(
-    `SELECT username, admin, password 
+    `SELECT username, admin, password, id
     FROM users
     WHERE username = "${username}" OR email = "${username}" AND password = "${password}";`,
     {
@@ -37,6 +37,7 @@ const logUserDb = async (req, res) => {
     };
   } else {
     const payload = {};
+    payload.user_id = userData[0].id;
     payload.username = userData[0].username;
     payload.admin = userData[0].admin;
     const tokenServer = jwt.sign(payload, config.JwtSecretKey, {

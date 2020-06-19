@@ -2,13 +2,14 @@ const orderService = require("../services/order-service");
 
 const getOrders = async (req, res) => {
   try {
-    const orderInfo = await orderService.getOrdersDb(req.params.username);
+    const orderInfo = await orderService.getOrdersDb(req, res);
     return res.status(200).json(orderInfo);
   } catch (err) {
     console.log(err);
     return res.status(500).json(err);
   }
 };
+
 const getAllOrders = async (req, res) => {
   try {
     const orderInfo = await orderService.getAllOrdersDb();
@@ -19,4 +20,24 @@ const getAllOrders = async (req, res) => {
   }
 };
 
-module.exports = { getOrders, getAllOrders };
+const createOrder = async (req, res) => {
+  try {
+    const orderInfo = await orderService.createOrderDb(req, res);
+    return res.status(200).json(orderInfo);
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json(err);
+  }
+};
+
+const updateOrder = async (req, res) => {
+  try {
+    await orderService.updateOrderDb(req);
+    return res.status(204).json();
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json(err);
+  }
+};
+
+module.exports = { getOrders, getAllOrders, createOrder, updateOrder };

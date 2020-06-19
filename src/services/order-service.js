@@ -27,14 +27,14 @@ const format = (rows) => {
   return result;
 };
 
-const getOrdersDb = async (req) => {
+const getOrdersDb = async (req, res) => {
   const data = await mySqlSequelize.query(
     `SELECT O.id AS order_id ,U.id AS user_id, O.payment_method, U.address, O.status, PD.*, SUM(P.quantity) AS quantity, SUM(P.quantity * PD.price) AS total_price
     FROM products_by_order P
     JOIN orders O ON P.id_order = O.id
     JOIN products PD ON P.id_product = PD.id
     JOIN users U ON O.id_user = U.id
-    WHERE U.username = "${req}"
+    WHERE U.username = "${res.decoded.username}"
     GROUP BY O.id, PD.name;`,
     {
       type: mySqlSequelize.QueryTypes.SELECT,
@@ -60,4 +60,40 @@ const getAllOrdersDb = async () => {
   return format(data);
 };
 
-module.exports = { getOrdersDb, getAllOrdersDb };
+const createOrderDb = async (req, res) => {
+  const { price, payment_method } = req.body;
+  const id_user = res.decoded.user_id;
+  const response = await mySqlSequelize.query(
+    `INSERT INTO orders (id_user, price, payment_method)
+    VALUES ("${id_user}", "${price}", "${payment_method}");`,
+    {
+      type: mySqlSequelize.QueryTypes.INSERT,
+    }
+  );
+
+  const id_order = response[0];
+  const products = req.body.products;
+  products.forEach(async (element) => {
+    await mySqlSequelize.query(
+      ` INSERT INTO products_by_order (id_order, id_product, quantity)
+      VALUES ("${id_order}", "${element.id_product}", "${element.quantity}");`,
+      {
+        type: mySqlSequelize.QueryTypes.INSERT,
+      }
+    );
+  });
+};
+
+const updateOrderDb = async (req) => {
+  const orderId = req.params.id;
+  const { status } = req.body;
+  return await mySqlSequelize.query(
+    `UPDATE orders
+    SET status = "${status}"
+    WHERE id = "${orderId}";`,
+    {
+      type: mySqlSequelize.QueryTypes.UPDATE,
+    }
+  );
+};
+module.exports = { getOrdersDb, getAllOrdersDb, createOrderDb, updateOrderDb };

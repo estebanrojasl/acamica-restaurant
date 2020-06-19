@@ -35,7 +35,7 @@ const createUserTable = async () => {
         name VARCHAR(60) NOT NULL,
         username VARCHAR(60) NOT NULL UNIQUE,
         password VARCHAR(60) NOT NULL,
-        email VARCHAR(60) NOT NULL,
+        email VARCHAR(60) NOT NULL UNIQUE,
         phone VARCHAR(60) NOT NULL,
         address VARCHAR(60) NOT NULL,
         active BOOL DEFAULT true,
@@ -74,7 +74,7 @@ const createOrderTable = async () => {
         id_user INT NOT NULL,
         price INT NOT NULL,
         payment_method ENUM('cash', 'card') NOT NULL,
-        status ENUM('new', 'confirmed', 'preparing', 'out', 'delivered') NOT NULL,
+        status ENUM('new', 'confirmed', 'preparing', 'out', 'delivered') DEFAULT 'new' NOT NULL,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ,
         updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
       );`
@@ -120,8 +120,9 @@ const addForeignKeys = async () => {
 
 const populateDb = async (req, res, next) => {
   try {
-    await mySqlSequelize.query(
-      `INSERT INTO users (name, admin, username, password, email, phone, address)
+    console.log(
+      await mySqlSequelize.query(
+        `INSERT IGNORE INTO users (name, admin, username, password, email, phone, address)
       VALUES ('Esteban Rojas', 1, 'erojasl', 'eafiT2020*', 'esteban7590@hotmail.com', '3201230', 'cra 43d 23s');
       
       INSERT IGNORE INTO products (name, image_url, description, price)
@@ -135,6 +136,10 @@ const populateDb = async (req, res, next) => {
       INSERT INTO products_by_order (id_order, id_product, quantity)
       VALUES (1, 1, 1),
       (1, 2, 2);`
+      ),
+      {
+        type: mySqlSequelize.QueryTypes.INSERT,
+      }
     );
   } catch (err) {
     console.log(err.errors);
