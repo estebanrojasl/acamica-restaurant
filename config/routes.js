@@ -20,7 +20,6 @@ const initApiRoutes = () => {
     authMiddleware.validateAdmin,
     productsController.updateProduct
   );
-  //no se puede por las FK -> active = 0? con un update
   router.delete(
     "/products/:id",
     authMiddleware.validateJWT,
@@ -32,7 +31,13 @@ const initApiRoutes = () => {
   router.post("/users/signup", usersController.createUser);
   router.post("/users/login", usersController.logUser);
 
-  //como organizar la respuesta de sql en json
+  //
+  router.get(
+    "/orders",
+    authMiddleware.validateJWT,
+    authMiddleware.validateAdmin,
+    ordersController.getAllOrders
+  );
   router.get(
     "/orders/:username",
     authMiddleware.validateJWT,
