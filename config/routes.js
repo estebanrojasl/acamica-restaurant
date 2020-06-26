@@ -31,14 +31,12 @@ const initApiRoutes = () => {
   router.post("/users/signup", usersController.createUser);
   router.post("/users/login", usersController.logUser);
 
-  //formateado en node
   router.get(
     "/orders",
     authMiddleware.validateJWT,
     authMiddleware.validateAdmin,
     ordersController.getAllOrders
   );
-  //formateado en node
   router.get(
     "/userorders",
     authMiddleware.validateJWT,

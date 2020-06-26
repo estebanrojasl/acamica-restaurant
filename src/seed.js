@@ -15,14 +15,30 @@ const mySqlSequelize = new Sequelize(
   }
 );
 
+const checkDb = async () => {
+  try {
+    return await mySqlSequelize.query(
+      `SELECT SCHEMA_NAME
+      FROM INFORMATION_SCHEMA.SCHEMATA
+     WHERE SCHEMA_NAME = '${MysqlConfig.Db}';`,
+      {
+        type: mySqlSequelize.QueryTypes.SELECT,
+      }
+    );
+  } catch (err) {
+    console.log(err);
+  }
+};
+
 const setDb = async () => {
   try {
     await mySqlSequelize.query(
-      `CREATE SCHEMA IF NOT EXISTS larissa_restaurant; 
+      `CREATE SCHEMA larissa_restaurant; 
       USE larissa_restaurant;`
     );
   } catch (err) {
     console.log(err.errors);
+    return err;
   }
 };
 
@@ -87,7 +103,7 @@ const createOrderTable = async () => {
 const createProductsByOrderTable = async () => {
   try {
     await mySqlSequelize.query(
-      `CREATE TABLE products_by_order (
+      `CREATE TABLE IF NOT EXISTS products_by_order (
         id_order INT NOT NULL,
         id_product INT NOT NULL,
         quantity INT DEFAULT 1
@@ -114,13 +130,14 @@ const addForeignKeys = async () => {
       FOREIGN KEY (id_product) REFERENCES products(id);`
     );
   } catch (err) {
-    console.log(err.errors);
+    console.log(err);
+    return;
   }
 };
 
 const populateDb = async (req, res, next) => {
   try {
-    console.log(
+    return (
       await mySqlSequelize.query(
         `INSERT IGNORE INTO users (name, admin, username, password, email, phone, address)
       VALUES ('Esteban Rojas', 1, 'erojasl', 'eafiT2020*', 'esteban7590@hotmail.com', '3201230', 'cra 43d 23s');
@@ -146,22 +163,24 @@ const populateDb = async (req, res, next) => {
   }
 };
 
-const listQuery = async (req, res, next) => {
-  return await mySqlSequelize.query(`SELECT * FROM users`, {
-    type: mySqlSequelize.QueryTypes.SELECT,
-  });
-};
-
 //como hacer esas funciones que se ejecutan de una?
 const initSeed = async () => {
-  await setDb();
-  await createUserTable();
-  await createProductTable();
-  await createOrderTable();
-  await createProductsByOrderTable();
-  await addForeignKeys();
-  await populateDb();
-  // console.log(await listQuery());
+  try {
+    let check = await checkDb();
+    if (check && check.length > 0) {
+      console.log("La base de datos ya existe");
+      return;
+    }
+    await setDb();
+    await createUserTable();
+    await createProductTable();
+    await createOrderTable();
+    await createProductsByOrderTable();
+    await addForeignKeys();
+    await populateDb();
+  } catch (err) {
+    return err;
+  }
 };
 
 initSeed();

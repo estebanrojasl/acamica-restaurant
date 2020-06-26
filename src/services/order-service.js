@@ -56,8 +56,8 @@ const getAllOrdersDb = async () => {
       type: mySqlSequelize.QueryTypes.SELECT,
     }
   );
-
-  return format(data);
+  return data;
+  // return format(data);
 };
 
 const createOrderDb = async (req, res) => {
