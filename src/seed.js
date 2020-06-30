@@ -35,9 +35,12 @@ const setDb = async () => {
     await mySqlSequelize.query(
       `CREATE SCHEMA larissa_restaurant; 
       USE larissa_restaurant;`
-    );
+    ),
+      {
+        type: mySqlSequelize.QueryTypes.RAW,
+      };
   } catch (err) {
-    console.log(err.errors);
+    console.log(err);
     return err;
   }
 };
@@ -57,9 +60,12 @@ const createUserTable = async () => {
         active BOOL DEFAULT true,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP);`
-    );
+    ),
+      {
+        type: mySqlSequelize.QueryTypes.RAW,
+      };
   } catch (err) {
-    console.log(err.errors);
+    console.log(err);
   }
 };
 
@@ -76,9 +82,12 @@ const createProductTable = async () => {
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ,
         updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
       );`
-    );
+    ),
+      {
+        type: mySqlSequelize.QueryTypes.RAW,
+      };
   } catch (err) {
-    console.log(err.errors);
+    console.log(err);
   }
 };
 
@@ -94,9 +103,12 @@ const createOrderTable = async () => {
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ,
         updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
       );`
-    );
+    ),
+      {
+        type: mySqlSequelize.QueryTypes.RAW,
+      };
   } catch (err) {
-    console.log(err.errors);
+    console.log(err);
   }
 };
 
@@ -108,9 +120,12 @@ const createProductsByOrderTable = async () => {
         id_product INT NOT NULL,
         quantity INT DEFAULT 1
       );`
-    );
+    ),
+      {
+        type: mySqlSequelize.QueryTypes.RAW,
+      };
   } catch (err) {
-    console.log(err.errors);
+    console.log(err);
   }
 };
 
@@ -128,7 +143,10 @@ const addForeignKeys = async () => {
       ALTER TABLE products_by_order
       ADD CONSTRAINT FK_PRODUCTBY_PRODUCT
       FOREIGN KEY (id_product) REFERENCES products(id);`
-    );
+    ),
+      {
+        type: mySqlSequelize.QueryTypes.FOREIGNKEYS,
+      };
   } catch (err) {
     console.log(err);
     return;
@@ -137,15 +155,14 @@ const addForeignKeys = async () => {
 
 const populateDb = async (req, res, next) => {
   try {
-    return (
-      await mySqlSequelize.query(
-        `INSERT IGNORE INTO users (name, admin, username, password, email, phone, address)
+    await mySqlSequelize.query(
+      `INSERT IGNORE INTO users (name, admin, username, password, email, phone, address)
       VALUES ('Esteban Rojas', 1, 'erojasl', 'eafiT2020*', 'esteban7590@hotmail.com', '3201230', 'cra 43d 23s');
       
       INSERT IGNORE INTO products (name, image_url, description, price)
       VALUES 
-      ('perro', 'http://sasdas.co', 'perro cliente', '1000'),
-      ('burger', 'http://sasdas.co', 'burger', '3000');
+      ('perro', 'http://ayayay.co', 'perro cliente', '1000'),
+      ('burger', 'http://yass.co', 'burger', '3000');
 
       INSERT INTO orders (id_user, price, payment_method, status)
       VALUES (1, 2000, 'cash', 'new');
@@ -153,22 +170,21 @@ const populateDb = async (req, res, next) => {
       INSERT INTO products_by_order (id_order, id_product, quantity)
       VALUES (1, 1, 1),
       (1, 2, 2);`
-      ),
+    ),
       {
         type: mySqlSequelize.QueryTypes.INSERT,
-      }
-    );
+      };
+    console.log("Database and tables created and populated");
   } catch (err) {
-    console.log(err.errors);
+    console.log(err);
   }
 };
 
-//como hacer esas funciones que se ejecutan de una?
-const initSeed = async () => {
+(async function () {
   try {
     let check = await checkDb();
     if (check && check.length > 0) {
-      console.log("La base de datos ya existe");
+      console.log("Database already exists");
       return;
     }
     await setDb();
@@ -181,6 +197,4 @@ const initSeed = async () => {
   } catch (err) {
     return err;
   }
-};
-
-initSeed();
+})();

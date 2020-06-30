@@ -9,7 +9,7 @@ const config = {
     Password: "eafiT2020*",
     Host: "localhost",
     Dialect: "mysql",
-    // logging: true,
+    // logging: true, // stop database from loggin responses
   },
 };
 

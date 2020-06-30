@@ -13,7 +13,7 @@ const getProducts = async (req, res) => {
 const createProduct = async (req, res) => {
   try {
     await productService.createProductDb(req);
-    return res.status(204).json();
+    return res.status(201).json({ message: "created" });
   } catch (err) {
     console.log(err);
     return res.status(500).json(err);
@@ -23,7 +23,7 @@ const createProduct = async (req, res) => {
 const updateProduct = async (req, res) => {
   try {
     await productService.updateProductDb(req);
-    return res.status(204).json();
+    return res.status(201).json({ message: "updated" });
   } catch (err) {
     console.log(err);
     return res.status(500).json(err);

@@ -57,7 +57,6 @@ const getAllOrdersDb = async () => {
     }
   );
   return data;
-  // return format(data);
 };
 
 const createOrderDb = async (req, res) => {
