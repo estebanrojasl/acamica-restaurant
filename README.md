@@ -1,18 +1,18 @@
-#Larissa restaurant
+# Larissa restaurant
 
-##Setup instructions
+## Setup instructions
 
-- Clone GitHub repository
+- Clone GitHub repository  
   `git clone https://github.com/estebanrojasl/acamica-restaurant.git`
 
-- Install npm dependencies
+- Install npm dependencies  
   `npm install`
 
-- Setup database creating tables, keys and populating with a few data
-  `npm run seed`
+- Setup database creating tables, keys and populating with a few data  
+  `npm run seed`  
   Or execute the seed\_.sql file preferably using MySQL Workbench
 
-- Initialize server
+- Initialize server  
   `npm run dev`
 
 - Start calling the API
