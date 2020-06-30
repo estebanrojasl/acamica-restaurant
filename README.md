@@ -1,7 +1,7 @@
 Instructions
 
 Clone GitHub repository
-git clone https://github.com/estebanrojasl/acamica-restaurant/tree/development
+`git clone https://github.com/estebanrojasl/acamica-restaurant.git`
 
 git branch
 Conocer el estado de la rama (si hay cambios sin guardar)
