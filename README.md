@@ -1,5 +1,7 @@
 # Larissa restaurant
 
+API to make restaurant order service.
+
 ## Setup instructions
 
 - Clone GitHub repository  
@@ -10,7 +12,7 @@
 
 - Setup database creating tables, keys and populating with a few data  
   `npm run seed`  
-  Or execute the seed\_.sql file preferably using MySQL Workbench
+  Or Setup a database using the information on restaurant\config\environments\development.js and then execute the seed\_.sql file preferably using MySQL Workbench
 
 - Initialize server  
   `npm run dev`
