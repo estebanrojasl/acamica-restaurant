@@ -2,16 +2,6 @@ const userService = require("../services/user-service");
 const ENV = process.env.NODE_ENV || "development";
 const { JwtTokenExpires } = require("../../config/environments/" + ENV).config;
 
-const getUsers = async (req, res) => {
-  try {
-    const userInfo = await userService.getUsersDb();
-    return res.status(200).json(userInfo);
-  } catch (err) {
-    console.log(err);
-    return res.status(500).json(err);
-  }
-};
-
 const createUser = async (req, res) => {
   try {
     await userService.createUserDb(req);
@@ -32,8 +22,8 @@ const logUser = async (req, res) => {
     });
   } catch (err) {
     console.log(err);
-    return res.status(401).json(err);
+    return res.status(401).json({ message: err.message });
   }
 };
 
-module.exports = { getUsers, createUser, logUser };
+module.exports = { createUser, logUser };

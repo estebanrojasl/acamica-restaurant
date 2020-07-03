@@ -3,12 +3,6 @@ const { mySqlSequelize } = require("../../config/database/mysql-db");
 const jwt = require("jsonwebtoken");
 const { config } = require("../../config/environments/" + ENV);
 
-const getUsersDb = async () => {
-  return await mySqlSequelize.query(`SELECT * FROM users`, {
-    type: mySqlSequelize.QueryTypes.SELECT,
-  });
-};
-
 const createUserDb = async (req) => {
   const { name, username, password, email, phone, address } = req.body;
   return await mySqlSequelize.query(
@@ -47,4 +41,4 @@ const logUserDb = async (req, res) => {
   }
 };
 
-module.exports = { getUsersDb, createUserDb, logUserDb };
+module.exports = { createUserDb, logUserDb };

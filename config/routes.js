@@ -27,7 +27,6 @@ const initApiRoutes = () => {
     productsController.deleteProduct
   );
 
-  router.get("/users", usersController.getUsers);
   router.post("/users/signup", usersController.createUser);
   router.post("/users/login", usersController.logUser);
 
