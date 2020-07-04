@@ -17,4 +17,5 @@ API to make restaurant order service.
 - Initialize server  
   `npm run dev`
 
-- Start calling the API
+- Start calling the API using the documentation:
+  https://documenter.getpostman.com/view/2166416/T17Dg97V
