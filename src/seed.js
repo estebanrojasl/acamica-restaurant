@@ -101,7 +101,7 @@ const createOrderTable = async () => {
         id_user INT NOT NULL,
         price INT NOT NULL,
         payment_method ENUM('cash', 'card') NOT NULL,
-        status ENUM('new', 'confirmed', 'preparing', 'out', 'delivered') DEFAULT 'new' NOT NULL,
+        status ENUM('new', 'confirmed', 'preparing', 'out', 'delivered', 'cancelled') DEFAULT 'new' NOT NULL,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ,
         updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
       );`,

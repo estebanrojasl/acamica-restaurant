@@ -33,7 +33,7 @@ const updateProduct = async (req, res) => {
 const deleteProduct = async (req, res) => {
   try {
     await productService.deleteProductDb(req);
-    return res.status(204).json();
+    return res.status(200).json({ message: "deleted" });
   } catch (err) {
     console.log(err);
     return res.status(500).json(err);
