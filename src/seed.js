@@ -32,13 +32,13 @@ const checkDb = async () => {
 
 const setDb = async () => {
   try {
-    await mySqlSequelize.query(
+    return await mySqlSequelize.query(
       `CREATE SCHEMA larissa_restaurant; 
-      USE larissa_restaurant;`
-    ),
+      USE larissa_restaurant;`,
       {
         type: mySqlSequelize.QueryTypes.RAW,
-      };
+      }
+    );
   } catch (err) {
     console.log(err);
     return err;
@@ -47,8 +47,9 @@ const setDb = async () => {
 
 const createUserTable = async () => {
   try {
-    await mySqlSequelize.query(
-      `CREATE TABLE IF NOT EXISTS users (
+    return (
+      await mySqlSequelize.query(
+        `CREATE TABLE IF NOT EXISTS users (
         id INT PRIMARY KEY AUTO_INCREMENT,
         admin BOOL DEFAULT false,
         name VARCHAR(60) NOT NULL,
@@ -60,10 +61,11 @@ const createUserTable = async () => {
         active BOOL DEFAULT true,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP);`
-    ),
+      ),
       {
         type: mySqlSequelize.QueryTypes.RAW,
-      };
+      }
+    );
   } catch (err) {
     console.log(err);
   }
@@ -71,7 +73,7 @@ const createUserTable = async () => {
 
 const createProductTable = async () => {
   try {
-    await mySqlSequelize.query(
+    return await mySqlSequelize.query(
       `CREATE TABLE IF NOT EXISTS products (
         id INT PRIMARY KEY AUTO_INCREMENT,
         name VARCHAR(60) NOT NULL UNIQUE,
@@ -81,11 +83,11 @@ const createProductTable = async () => {
         active BOOL DEFAULT true,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ,
         updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-      );`
-    ),
+      );`,
       {
         type: mySqlSequelize.QueryTypes.RAW,
-      };
+      }
+    );
   } catch (err) {
     console.log(err);
   }
@@ -93,7 +95,7 @@ const createProductTable = async () => {
 
 const createOrderTable = async () => {
   try {
-    await mySqlSequelize.query(
+    return await mySqlSequelize.query(
       `CREATE TABLE IF NOT EXISTS orders (
         id INT PRIMARY KEY AUTO_INCREMENT,
         id_user INT NOT NULL,
@@ -102,11 +104,11 @@ const createOrderTable = async () => {
         status ENUM('new', 'confirmed', 'preparing', 'out', 'delivered') DEFAULT 'new' NOT NULL,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ,
         updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-      );`
-    ),
+      );`,
       {
         type: mySqlSequelize.QueryTypes.RAW,
-      };
+      }
+    );
   } catch (err) {
     console.log(err);
   }
@@ -114,16 +116,16 @@ const createOrderTable = async () => {
 
 const createProductsByOrderTable = async () => {
   try {
-    await mySqlSequelize.query(
+    return await mySqlSequelize.query(
       `CREATE TABLE IF NOT EXISTS products_by_order (
         id_order INT NOT NULL,
         id_product INT NOT NULL,
         quantity INT DEFAULT 1
-      );`
-    ),
+      );`,
       {
         type: mySqlSequelize.QueryTypes.RAW,
-      };
+      }
+    );
   } catch (err) {
     console.log(err);
   }
@@ -131,7 +133,7 @@ const createProductsByOrderTable = async () => {
 
 const addForeignKeys = async () => {
   try {
-    await mySqlSequelize.query(
+    return await mySqlSequelize.query(
       `ALTER TABLE orders
       ADD CONSTRAINT FK_ORDER_USER
       FOREIGN KEY (id_user) REFERENCES users(id);
@@ -142,11 +144,11 @@ const addForeignKeys = async () => {
       
       ALTER TABLE products_by_order
       ADD CONSTRAINT FK_PRODUCTBY_PRODUCT
-      FOREIGN KEY (id_product) REFERENCES products(id);`
-    ),
+      FOREIGN KEY (id_product) REFERENCES products(id);`,
       {
         type: mySqlSequelize.QueryTypes.FOREIGNKEYS,
-      };
+      }
+    );
   } catch (err) {
     console.log(err);
     return;
@@ -169,12 +171,12 @@ const populateDb = async (req, res, next) => {
 
       INSERT INTO products_by_order (id_order, id_product, quantity)
       VALUES (1, 1, 1),
-      (1, 2, 2);`
-    ),
+      (1, 2, 2);`,
       {
         type: mySqlSequelize.QueryTypes.INSERT,
-      };
-    console.log("Database and tables created and populated");
+      }
+    );
+    return console.log("Database and tables created and populated");
   } catch (err) {
     console.log(err);
   }
